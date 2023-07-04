@@ -1,0 +1,71 @@
+POST http://localhost:3000/api/students
+Content-Type: application/json
+
+{
+  "name": "Miguelito",
+  "email": "miguel.email",
+  "address": "São Jose",
+  "age": "18",
+  "phone_number": "98981643038",
+  "class_": 1,
+  "grades": [2,3,4],
+  "profile": "MyProfile"
+}
+
+###
+GET http://localhost:3000/api/students
+
+###
+GET http://localhost:3000/api/students/647e82b3e111fd66f7c0e0b7
+
+###
+DELETE http://localhost:3000/api/students/6478dab34f2bff0861376eac
+
+###
+PUT http://localhost:3000/api/students/649cdf367c39100ed224fd0f
+Content-Type: application/json
+
+{
+  "name": "Miguel",
+  "email": "miguel.email",
+  "address": "São Jose",
+  "age": "18",
+  "phone_number": "98981643038",
+  "class_": "Class12323",
+  "grades": [],
+  "profile": "MyProfile"
+}
+
+###
+PUT http://localhost:3000/api/students/6478ce90a834d43a652f78e5/grades/10
+
+###
+POST http://localhost:3000/api/class
+Content-Type: application/json
+
+{
+    "name": "Class1A"
+}
+
+###
+GET http://localhost:3000/api/class
+
+###
+GET http://localhost:3000/api/class/647e83d6b78409c5fb5e6e76
+
+###
+PUT http://localhost:3000/api/class/647e83d6b78409c5fb5e6e76/append/648a4ea06148bcd7e065a274
+
+###
+PUT http://localhost:3000/api/class/6478c700cdfc47c58fce0a18/pop/6478dab34f2bff0861376eac
+
+###
+PUT http://localhost:3000/api/class/6478c700cdfc47c58fce0a18
+Content-Type: application/json
+
+{
+    "name": "Class1B"
+}
+
+###
+DELETE http://localhost:3000/api/class/647e86109a992941914d4d6c
