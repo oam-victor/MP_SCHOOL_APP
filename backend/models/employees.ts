@@ -7,10 +7,9 @@ const employeeSchema =  new Schema(
         email: {type: String},
         position: {type: String},
         department: {type: String},
-        salary: {type: String},
-        hire_date: {type: String},
+        salary: {type: Number},
         manager: {type: String},
-        phone: {type:String} 
+        phone: {type:Number} 
     },
     {
         timestamps: true

@@ -94,29 +94,4 @@ export const studentController = {
       res.json(err)
     }
   },
-  grades: async (req: Request, res: Response) => {
-    try {
-      const studentID = req.params.id
-      const grade = req.params.grade
-      const student = await Student.findById(studentID)
-
-      if (student == null) {
-        res.status(404).json({ message: 'Student not found!' })
-      } else {
-        const student_object = student.toObject()
-        student_object.grades.push(parseFloat(grade))
-        const response = await Student.findByIdAndUpdate(
-          studentID,
-          student_object,
-        )
-        if (response == null) {
-          res.status(404).json({ message: 'Student not found!' })
-        } else {
-          res.status(200).json({ message: 'Graded added succesfully!' })
-        }
-      }
-    } catch (err) {
-      res.json({ message: err })
-    }
-  },
 }

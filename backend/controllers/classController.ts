@@ -4,10 +4,16 @@ import { Request, Response } from 'express'
 import { ObjectId } from 'mongodb'
 import { Types } from 'mongoose'
 
+interface classInt {
+  name: number,
+  students: ObjectId[],
+  teacher: string
+}
+
 export const classController = {
   getAll: async (req: Request, res: Response) => {
     try {
-      const class_ = await Class.find()
+      const class_:classInt[] = await Class.find()
       if (class_.length === 0) {
         res.status(204).json({ message: 'There are no Classes!' })
       } else {
@@ -32,7 +38,7 @@ export const classController = {
   },
   create: async (req: Request, res: Response) => {
     try {
-      const class_ = {
+      const class_:classInt = {
         name: req.body.name,
         teacher: req.body.teacher,
         students: req.body.students,
@@ -45,8 +51,10 @@ export const classController = {
   },
   update: async (req: Request, res: Response) => {
     try {
-      const class_ = {
+      const class_:classInt = {
         name: req.body.name,
+        teacher: req.body.teacher,
+        students: req.body.students,
       }
 
       const id = req.params.classID
@@ -85,7 +93,7 @@ export const classController = {
       } else {
         /*Add student to class*/
 
-        const class_object = class_.toObject()
+        const class_object:classInt = class_.toObject()
         class_object.students.push(new Types.ObjectId(studentID))
         const response1 = await Class.findByIdAndUpdate(classID, class_object)
 
@@ -111,23 +119,24 @@ export const classController = {
   },
   pop: async (req: Request, res: Response) => {
     try {
-      const studentID = new ObjectId(req.params.studentID)
+      const studentID =  new Types.ObjectId(req.params.studentID)
       const classID = req.params.classID
       const class_ = await Class.findById(classID)
 
       if (class_ == null) {
         res.status(404).json({ message: 'Class not found!' })
       } else {
-        const class_object = class_.toObject()
-        const class_object_students = class_object.students.filter(
-          (student) => student != studentID,
-        )
+          const class_object = class_.toObject()
+          const class_object_students:Types.ObjectId[] = class_object.students.filter(
+            student => (student.toString() != studentID.toString()),
+          )
+          
         class_object.students = class_object_students
         const response = await Class.findByIdAndUpdate(classID, class_object)
         if (response == null) {
           res.status(404).json({ message: 'Class not found!' })
         } else {
-          res.status(200).json({ message: 'Student was removed succesfully!' })
+          res.status(200).json({ message: class_object.students })
         }
       }
     } catch (err) {

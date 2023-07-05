@@ -3,9 +3,9 @@ const {Schema} = mongoose;
 
 const classesSchema = new Schema(
     {
-        name: {type: String, required: true},
+        name: {type: Number, required: true},
         students: [{type: Schema.Types.ObjectId, ref: 'Student'}],
-        teacher: {type: Schema.Types.ObjectId, ref: 'Employee'},
+        teacher: String,
     },
     {
         timestamps: true

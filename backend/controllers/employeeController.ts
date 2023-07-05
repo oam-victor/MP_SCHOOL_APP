@@ -1,17 +1,26 @@
 import { Employee } from '../models/employees'
 import { Request, Response } from 'express'
 
+interface _employee{
+  name: string,
+  email: string,
+  position: string,
+  department: string,
+  salary: number,
+  manager: string,
+  phone: number,
+}
+
 export const exployeeController = {
   create: async (req: Request, res: Response) => {
-    const employee = {
+    const employee:_employee = {
       name: req.body.name,
       email: req.body.email,
       position: req.body.position,
       department: req.body.department,
       salary: req.body.salary,
-      hire_date: req.body.hire_date,
       manager: req.body.manager,
-      phone: req.body,
+      phone: req.body.phone,
     }
     try {
       const response = await Employee.create(employee)
@@ -23,21 +32,24 @@ export const exployeeController = {
     }
   },
   update: async (req: Request, res: Response) => {
-    const id = req.params.id
-    const employee = {
+    const employee:_employee = {
       name: req.body.name,
       email: req.body.email,
       position: req.body.position,
       department: req.body.department,
       salary: req.body.salary,
-      hire_date: req.body.hire_date,
       manager: req.body.manager,
-      phone: req.body,
+      phone: req.body.phone,
     }
+    const id = req.params.id
 
     try {
       const response = await Employee.findByIdAndUpdate(id, employee)
-      res.json({ response, message: 'Employee updated sucessfully' })
+      if (response == null) {
+        res.status(404).json({ message: 'Employee not found!' })
+      } else {
+        res.status(200).json({ message: 'Employee was updated succesfully!' })
+      }
     } catch (err) {
       res.json({ message: err })
     }

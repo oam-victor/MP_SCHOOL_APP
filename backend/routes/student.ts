@@ -23,8 +23,4 @@ router.put('/:id', (req,res)=>{
     studentController.update(req,res);
 })
 
-router.put('/:id/grades/:grade', (req,res)=>{
-    studentController.grades(req,res);
-})
-
 export const studentRouter = router;

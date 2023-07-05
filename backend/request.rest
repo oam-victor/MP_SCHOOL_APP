@@ -5,8 +5,8 @@ Content-Type: application/json
   "name": "Miguelito",
   "email": "miguel.email",
   "address": "São Jose",
-  "age": "18",
-  "phone_number": "98981643038",
+  "age": 18,
+  "phone_number": 98981643038,
   "class_": 1,
   "grades": [2,3,4],
   "profile": "MyProfile"
@@ -57,7 +57,7 @@ GET http://localhost:3000/api/class/647e83d6b78409c5fb5e6e76
 PUT http://localhost:3000/api/class/647e83d6b78409c5fb5e6e76/append/648a4ea06148bcd7e065a274
 
 ###
-PUT http://localhost:3000/api/class/6478c700cdfc47c58fce0a18/pop/6478dab34f2bff0861376eac
+PUT http://localhost:3000/api/class/64a4b29180cb5eda064cb6dc/pop/64a4a1a979f1193fcd0987e4
 
 ###
 PUT http://localhost:3000/api/class/6478c700cdfc47c58fce0a18
@@ -69,3 +69,17 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3000/api/class/647e86109a992941914d4d6c
+
+###
+POST http://localhost:3000/api/employees
+Content-Type: application/json
+
+{
+  "name": "Artur",
+  "email": "Artur@gmail",
+  "position": "Boss",
+  "department": "None",
+  "salary": 10000,
+  "manager": "No manager",
+  "phone": 98981653736
+}
