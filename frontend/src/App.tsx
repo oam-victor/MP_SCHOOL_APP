@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-import { Home } from './pages/Home'
 import { Classes } from './pages/Classes'
 import { Employees } from './pages/Employees'
 import { Financial } from './pages/Financial'
@@ -12,7 +11,7 @@ function App() {
     <div className='min-w-min h-screen'>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route index element={<Students />} />
           <Route path="Classes" element={<Classes />} />
           <Route path="Employees" element={<Employees />} />
           <Route path="Financial" element={<Financial />} />
