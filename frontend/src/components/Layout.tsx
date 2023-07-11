@@ -9,10 +9,12 @@ interface RootState {
 }
 
 interface UserState {
-  uid: string | null;
-  displayName: string | null;
-  email: string | null;
-  photoURL: string | null;
+  user: {
+    uid: string | null;
+    displayName: string | null;
+    email: string | null;
+    photoURL: string | null;
+  }
 }
 
 export const Layout = () => {
@@ -20,13 +22,12 @@ export const Layout = () => {
     (state: RootState) => state.logged.isLogged,
   )
 
-    const uid = useSelector((state: UserState) => state.uid);
-    const photoURL = useSelector((state: UserState) => state.photoURL);
-    const displayName = useSelector((state: UserState) => state.displayName);
-    const email = useSelector((state: UserState) => state.email);
+  const uid = useSelector((state: UserState) => state.user.uid);
+  const photoURL = useSelector((state: UserState) => state.user.photoURL);
+  const displayName = useSelector((state: UserState) => state.user.displayName);
+  const email = useSelector((state: UserState) => state.user.email);
 
-    const user:UserState = {uid, displayName, photoURL, email}
-    console.log(user)
+  const user = { uid, displayName, photoURL, email }
 
   return (
     <>
@@ -40,9 +41,9 @@ export const Layout = () => {
               <p className="sm:mx-auto text-white font-mono sm:text-xl text-2xl font-bold">
                 SRA
               </p>
-              <p className="sm:hidden mr-1 sm:ml-5 text-white font-mono sm:text-xl text-2xl font-bold">
-                PIC
-              </p>
+              <div className="sm:hidden mr-1 sm:ml-5 text-white font-mono sm:text-xl text-2xl font-bold">
+                {user.photoURL ? (<img src={user.photoURL} alt='profile'></img>) : (<>false</>)}
+              </div>
             </div>
 
             <div className="sm:col-span-8">
@@ -109,7 +110,7 @@ export const Layout = () => {
           </footer>
         </div>
       ) : (
-        <Home/>
+        <Home />
       )}
     </>
   )

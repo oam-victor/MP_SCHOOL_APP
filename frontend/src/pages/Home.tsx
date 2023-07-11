@@ -16,8 +16,8 @@ export const Home = () => {
       const result = await signInWithPopup(auth, provider);
       const { uid, displayName, email, photoURL } = result.user;
       const user = { uid, displayName, email, photoURL };
-      dispatch(setUser(user));
-      dispatch(toggleIsLogged())
+      await dispatch(setUser(user));
+      await dispatch(toggleIsLogged())
     }catch(err){
       console.log(err);
     }
