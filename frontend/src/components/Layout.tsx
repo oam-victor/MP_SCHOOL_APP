@@ -1,7 +1,6 @@
 import { Outlet, Link } from 'react-router-dom'
-//import { toggleIsLogged } from '../store/loggedSlicer'
-//import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
+import { Home } from '../pages/Home'
 
 interface RootState {
   logged: {
@@ -9,15 +8,29 @@ interface RootState {
   }
 }
 
+interface UserState {
+  uid: string | null;
+  displayName: string | null;
+  email: string | null;
+  photoURL: string | null;
+}
+
 export const Layout = () => {
-  //const dispatch = useDispatch();
   const isLogged: boolean = useSelector(
     (state: RootState) => state.logged.isLogged,
   )
 
+    const uid = useSelector((state: UserState) => state.uid);
+    const photoURL = useSelector((state: UserState) => state.photoURL);
+    const displayName = useSelector((state: UserState) => state.displayName);
+    const email = useSelector((state: UserState) => state.email);
+
+    const user:UserState = {uid, displayName, photoURL, email}
+    console.log(user)
+
   return (
     <>
-      {!isLogged ? (
+      {isLogged ? (
         <div className="flex flex-col h-full justify-between">
           <nav
             className="sm:grid sm:grid-cols-10 bg-gray-800 "
@@ -96,7 +109,7 @@ export const Layout = () => {
           </footer>
         </div>
       ) : (
-        <div></div>
+        <Home/>
       )}
     </>
   )

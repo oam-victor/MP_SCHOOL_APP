@@ -1,22 +1,32 @@
 import { GoogleLogo, GithubLogo } from "@phosphor-icons/react";
-import {GoogleAuthProvider, GithubAuthProvider, signInWithPopup} from 'firebase/auth'
+import { GoogleAuthProvider, GithubAuthProvider, signInWithPopup} from 'firebase/auth'
 import {auth} from '../services/firebase'
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/userSlicer";
+import { toggleIsLogged } from '../store/loggedSlicer'
+import { Dispatch } from "redux";
 
 export const Home = () => {
-  const handleGoogleSignIn = () => {
+  
+  const dispatch: Dispatch<ReturnType<typeof setUser> | ReturnType<typeof toggleIsLogged>>= useDispatch()
+
+  const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try{
-      const result = signInWithPopup(auth, provider);
-      console.log(result);
+      const result = await signInWithPopup(auth, provider);
+      const { uid, displayName, email, photoURL } = result.user;
+      const user = { uid, displayName, email, photoURL };
+      dispatch(setUser(user));
+      dispatch(toggleIsLogged())
     }catch(err){
       console.log(err);
     }
   }
-  const handleGithubSignIn = () => {
+  const handleGithubSignIn = async () => {
     const provider = new GithubAuthProvider();
     try{
-      const result = signInWithPopup(auth, provider);
-      console.log(result);
+      const result = await signInWithPopup(auth, provider);
+      console.log(result)
     }catch(err){
       console.log(err);
     }
@@ -27,7 +37,7 @@ export const Home = () => {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 mx-auto h-10 w-auto">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <p className="text-center text-black font-bold text-2xl font-bold border-b-2">
+          <p className="text-center text-black text-2xl font-bold border-b-2">
             SRA
           </p>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
