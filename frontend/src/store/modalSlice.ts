@@ -18,7 +18,7 @@ const initialState: InitialState = {
   modalFinancial: false,
 }
 
-const modalSlice = createSlice({
+const modalSlice:any = createSlice({
   name: 'modal',
   initialState,
   reducers: {

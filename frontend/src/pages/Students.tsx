@@ -93,14 +93,14 @@ export const Students = () => {
                     <dd className="mb-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
                       {student.email}
                     </dd>
-                    <dd className="flex justify-end text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+                    <dd className="flex justify-start text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
                       <button
                         type="button"
                         onClick={() => {
                           setSelect(student)
                           dispatch(toggleModalStudentDelete())
                         }}
-                        className="mr-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
+                        className="h-8 mr-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
                       >
                         Delete
                       </button>
@@ -110,7 +110,7 @@ export const Students = () => {
                           setSelect(student)
                           dispatch(toggleModalStudent())
                         }}
-                        className="font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
+                        className="h-8 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
                       >
                         Edit
                       </button>

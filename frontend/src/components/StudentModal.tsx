@@ -24,11 +24,15 @@ interface StudentModalProps {
 
 interface RootState {
   modal: {
-    modalStudent: boolean,
-    modalStudentAdd: boolean,
-    modalStudentDelete: boolean,
+    modalStudent: boolean
+    modalStudentAdd: boolean
+    modalStudentDelete: boolean
   }
 }
+
+let nameFlag: boolean = false
+let ageFlag: boolean = false
+let classFlag: boolean = false
 
 export const StudentModal = ({ student }: StudentModalProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,9 +49,7 @@ export const StudentModal = ({ student }: StudentModalProps) => {
   const [studentPhone, setStudentPhone] = useState<number>(
     student?.phone_number || 0,
   )
-  const [studentClass, setStudentClass] = useState<number>(
-    student?.class_ || 0,
-  )
+  const [studentClass, setStudentClass] = useState<number>(student?.class_ || 0)
   const [studentGrade0, setStudentGrade0] = useState<number>(
     student?.grades[0] || 0,
   )
@@ -141,9 +143,8 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <form
                       onSubmit={() => {
-                        handleSubmit();
+                        handleSubmit()
                       }}
-
                       className="p-5 z-2"
                     >
                       <div className="space-y-12">
@@ -167,16 +168,29 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                               </label>
                               <div className="mt-2">
                                 <input
+                                  required
                                   type="text"
                                   name="first-name"
                                   id="first-name"
                                   value={studentName}
-                                  onChange={(e) =>
+                                  onChange={(e) => {
                                     setStudentName(e.target.value)
-                                  }
+                                    // Test regular expression for numbers
+                                    const updatedStudentName = e.target.value
+                                    if (!/\d/.test(updatedStudentName)) {
+                                      nameFlag = false
+                                    } else {
+                                      nameFlag = true
+                                    }
+                                  }}
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                               </div>
+                              {nameFlag && (
+                                <div className="text-sm font-thin text-red-400">
+                                  Name should not have numbers
+                                </div>
+                              )}
                             </div>
 
                             <div className="sm:col-span-3">
@@ -192,12 +206,29 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                                   name="age"
                                   id="age"
                                   value={studentAge}
-                                  onChange={(e) =>
+                                  onChange={(e) => {
                                     setStudentAge(Number(e.target.value))
-                                  }
+                                    const updatedStudentAge = Number(
+                                      e.target.value,
+                                    )
+                                    if (
+                                      /^(?:[4-9]|[1-9][0-9]|1[01][0-9]|1[02][0-9]|130)$/.test(
+                                        String(updatedStudentAge),
+                                      )
+                                    ) {
+                                      ageFlag = false
+                                    } else {
+                                      ageFlag = true
+                                    }
+                                  }}
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                               </div>
+                              {ageFlag && (
+                                <div className="text-sm font-thin text-red-400">
+                                  Age should be between 4-130
+                                </div>
+                              )}
                             </div>
 
                             <div className="sm:col-span-3">
@@ -213,12 +244,29 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                                   name="class"
                                   id="class"
                                   value={studentClass}
-                                  onChange={(e) =>
+                                  onChange={(e) => {
                                     setStudentClass(Number(e.target.value))
-                                  }
+                                    const updatedStudentClass = Number(
+                                      e.target.value,
+                                    )
+                                    if (
+                                      /^(?:[1-9]|[1-9][0-9])$/.test(
+                                        String(updatedStudentClass),
+                                      )
+                                    ) {
+                                      classFlag = false
+                                    } else {
+                                      classFlag = true
+                                    }
+                                  }}
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                               </div>
+                              {classFlag && (
+                              <div className="text-sm font-thin text-red-400">
+                                Class should be between 1-99
+                              </div>
+                            )}
                             </div>
 
                             <div className="sm:col-span-3">
@@ -354,12 +402,22 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                         >
                           Cancel
                         </button>
-                        <button
-                          type="submit"
-                          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                          Save
-                        </button>
+                        {nameFlag || classFlag || ageFlag ? (
+                          <button
+                            disabled
+                            type="submit"
+                            className="opacity-30 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                            Save
+                          </button>
+                        ) : (
+                          <button
+                            type="submit"
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                            Save
+                          </button>
+                        )}
                       </div>
                     </form>
                   </Dialog.Panel>

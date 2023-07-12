@@ -5,7 +5,7 @@ interface InitialState {
   }
   
   const initialState: InitialState = {
-    isLogged: false
+    isLogged: localStorage.getItem('isLogged') === 'true' || false,
   }
 
 const loggedSlice = createSlice({
@@ -13,8 +13,9 @@ const loggedSlice = createSlice({
     initialState,
     reducers: {
         toggleIsLogged: (state:InitialState) => {
-            state.isLogged = !state.isLogged
-            //state = [...state, action.payload]
+          const updatedIsLogged = !state.isLogged;
+          state.isLogged = updatedIsLogged;
+          localStorage.setItem('isLogged', String(updatedIsLogged));
           }
     }
 })

@@ -10,10 +10,10 @@ interface RootState {
 
 interface UserState {
   user: {
-    uid: string | null;
-    displayName: string | null;
-    email: string | null;
-    photoURL: string | null;
+    uid: string | null
+    displayName: string | null
+    email: string | null
+    photoURL: string | null
   }
 }
 
@@ -22,10 +22,10 @@ export const Layout = () => {
     (state: RootState) => state.logged.isLogged,
   )
 
-  const uid = useSelector((state: UserState) => state.user.uid);
-  const photoURL = useSelector((state: UserState) => state.user.photoURL);
-  const displayName = useSelector((state: UserState) => state.user.displayName);
-  const email = useSelector((state: UserState) => state.user.email);
+  const uid = useSelector((state: UserState) => state.user.uid)
+  const photoURL = useSelector((state: UserState) => state.user.photoURL)
+  const displayName = useSelector((state: UserState) => state.user.displayName)
+  const email = useSelector((state: UserState) => state.user.email)
 
   const user = { uid, displayName, photoURL, email }
 
@@ -42,7 +42,20 @@ export const Layout = () => {
                 SRA
               </p>
               <div className="sm:hidden mr-1 sm:ml-5 text-white font-mono sm:text-xl text-2xl font-bold">
-                {user.photoURL ? (<img src={user.photoURL} alt='profile'></img>) : (<>false</>)}
+                <Link to="/Profile">
+                  <button type="button">
+                    {user.photoURL ? (
+                      <img
+                        className="rounded-full cursor-pointer hover:opacity-50"
+                        width={'30rem'}
+                        src={user.photoURL}
+                        alt="profile"
+                      ></img>
+                    ) : (
+                      <>NoUser</>
+                    )}
+                  </button>
+                </Link>
               </div>
             </div>
 
@@ -101,7 +114,20 @@ export const Layout = () => {
               </ul>
             </div>
             <div className="sm:flex items-center justify-center hidden sm:col-span-1 ">
-              <p className=" text-white font-mono text-xl font-bold">PIC</p>
+              <Link to="/Profile">
+                <button type="button">
+                  {user.photoURL ? (
+                    <img
+                      className="rounded-full cursor-pointer hover:opacity-50"
+                      width={'30rem'}
+                      src={user.photoURL}
+                      alt="profile"
+                    ></img>
+                  ) : (
+                    <>NoUser</>
+                  )}
+                </button>
+              </Link>
             </div>
           </nav>
           <Outlet />
