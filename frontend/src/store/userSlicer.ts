@@ -14,7 +14,7 @@ const initialState: InitialState = {
   photoURL:  localStorage.getItem('photoURL') ? localStorage.getItem('photoURL') : null,
 }
 
-const userSlice = createSlice({
+const userSlice:any = createSlice({
   name: 'user',
   initialState,
   reducers: {

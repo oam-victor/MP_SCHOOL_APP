@@ -1,79 +1,135 @@
-import { Fragment, useRef, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { ObjectId } from 'mongoose'
+import { FinancialModal } from '../components/FinancialModal'
+import { FinancialModalAdd } from '../components/FinancialModalAdd'
+import { FinancialModalDelete } from '../components/FinancialModalDelete'
+import { useDispatch } from 'react-redux'
+import { toggleModalFinancial } from '../store/modalSlice'
+import { toggleModalFinancialAdd } from '../store/modalSlice'
+import { toggleModalFinancialDelete } from '../store/modalSlice'
+
+interface Financial {
+  _id: ObjectId
+  name: string
+  type: string
+  cost: number
+  paid_on: Date
+}
+
+interface RootState {
+  modal: {
+    modalFinancial: boolean
+    modalFinancialAdd: boolean
+    modalFinancialDelete: boolean
+  }
+}
 
 export const Financial = () => {
-  const [open, setOpen] = useState(true)
+  const [income, setIncome] = useState<Financial[] | null>(null)
+  const [expense, setExpense] = useState<Financial[] | null>(null)
+  const [select, setSelect] = useState<Financial | null>(null)
+  const dispatch = useDispatch()
 
-  const cancelButtonRef = useRef(null)
+  const modalAdd: boolean = useSelector(
+    (state: RootState) => state.modal.modalFinancialAdd,
+  )
+
+  const modalDelete: boolean = useSelector(
+    (state: RootState) => state.modal.modalFinancialDelete,
+  )
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = axios.get('http://localhost:3000/api/income')
+        const responseData = (await response).data
+        setIncome(responseData)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-        </Transition.Child>
-
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    <div className="delay-300 mx-auto w-3/4">
+      {select && <FinancialModal income={select} />}
+      {modalAdd && <FinancialModalAdd />}
+      {modalDelete && select && <FinancialModalDelete id_={select?._id} />}
+      {income ? (
+        <div className="w-full p-5">
+          <div className="px-4 sm:px-0">
+            <h3 className="text-xl text-green-700 font-semibold leading-7">
+              Income
+            </h3>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(toggleModalFinancialAdd())
+              }}
+              className="font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
-                    </div>
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                        Deactivate account
-                      </Dialog.Title>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          Are you sure you want to deactivate your account? All of your data will be permanently
-                          removed. This action cannot be undone.
-                        </p>
-                      </div>
-                    </div>
+              Add
+            </button>
+          </div>
+          <div className="mt-6 border-t border-gray-100">
+            <dl className="divide-y divide-gray-100">
+              {income.map((income) => {
+                return (
+                  <div
+                    onMouseDown={(e) => e.preventDefault()}
+                    key={String(income._id)}
+                    className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 "
+                  >
+                    <dt className="flex items-center text-sm font-medium leading-6 text-gray-900">
+                      {income.name}
+                    </dt>
+                    <dd className="mb-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+                      {income.cost.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      })}
+                    </dd>
+                    <dd className="flex justify-start text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelect(income)
+                          dispatch(toggleModalFinancialDelete())
+                        }}
+                        className="h-8 mr-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelect(income)
+                          dispatch(toggleModalFinancial())
+                        }}
+                        className="h-8 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
+                      >
+                        Edit
+                      </button>
+                    </dd>
                   </div>
-                </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => setOpen(false)}
-                  >
-                    Deactivate
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => setOpen(false)}
-                    ref={cancelButtonRef}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
+                )
+              })}
+            </dl>
           </div>
         </div>
-      </Dialog>
-    </Transition.Root>
+      ) : (
+        <div className="text-8xl flex  justify-center items-center">
+          <span className="animate-ping">.</span>
+          <span className="animate-ping">.</span>
+          <span className="animate-ping">.</span>
+          <span className="animate-ping">.</span>
+          <span className="animate-ping">.</span>
+        </div>
+      )}
+    </div>
   )
 }

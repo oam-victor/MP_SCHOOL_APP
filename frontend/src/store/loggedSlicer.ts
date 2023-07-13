@@ -8,7 +8,7 @@ interface InitialState {
     isLogged: localStorage.getItem('isLogged') === 'true' || false,
   }
 
-const loggedSlice = createSlice({
+const loggedSlice:any = createSlice({
     name: "logged",
     initialState,
     reducers: {

@@ -70,7 +70,7 @@ export const StudentModal = ({ student }: StudentModalProps) => {
     setStudentGrade0(student?.grades[0] || 0)
     setStudentGrade1(student?.grades[1] || 0)
     setStudentGrade2(student?.grades[2] || 0)
-    setStudentId(student?._id || 0)
+    setStudentId(student?._id)
     setStudentProfile(student?.profile || '')
   }, [student])
 
@@ -399,6 +399,9 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                         <button
                           type="button"
                           className="text-sm font-semibold leading-6 text-gray-900"
+                          onClick={() => {
+                            dispatch(toggleModalStudent())
+                          }}
                         >
                           Cancel
                         </button>
