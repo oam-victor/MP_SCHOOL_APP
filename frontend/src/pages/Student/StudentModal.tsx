@@ -2,7 +2,7 @@ import type { Dispatch } from 'redux'
 import { Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleModalStudent } from '../store/modalSlice'
+import { toggleModalStudent } from '../../store/modalSlice'
 import { ObjectId } from 'mongoose'
 import axios from 'axios'
 
@@ -30,9 +30,9 @@ interface RootState {
   }
 }
 
-let nameFlag: boolean = false
-let ageFlag: boolean = false
-let classFlag: boolean = false
+let nameFlag  = false
+let ageFlag  = false
+let classFlag = false
 
 export const StudentModal = ({ student }: StudentModalProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -244,6 +244,7 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                                   name="class"
                                   id="class"
                                   value={studentClass}
+                                  disabled
                                   onChange={(e) => {
                                     setStudentClass(Number(e.target.value))
                                     const updatedStudentClass = Number(

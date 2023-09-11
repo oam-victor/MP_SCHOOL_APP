@@ -2,6 +2,17 @@ import { Outlet, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Home } from '../pages/Home'
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 interface RootState {
   logged: {
     isLogged: boolean
@@ -18,9 +29,12 @@ interface UserState {
 }
 
 export const Layout = () => {
+  
   const isLogged: boolean = useSelector(
     (state: RootState) => state.logged.isLogged,
   )
+
+  const userSlice = useSelector((state: User_) => state.user)
 
   const uid = useSelector((state: UserState) => state.user.uid)
   const photoURL = useSelector((state: UserState) => state.user.photoURL)
@@ -52,7 +66,7 @@ export const Layout = () => {
                         alt="profile"
                       ></img>
                     ) : (
-                      <>NoUser</>
+                      <>{user.displayName}</>
                     )}
                   </button>
                 </Link>
@@ -111,8 +125,21 @@ export const Layout = () => {
                     </button>
                   </Link>
                 </li>
+
+                {userSlice.permission == "admin" && (<li className='mr-2'>
+                  <Link to="/User">
+                    <button
+                      type="button"
+                      className="sm:m-2 m-1 items-center justify-center rounded-md sm:p-2 p-1 text-gray-400 hover:bg-gray-700 hover:text-white "
+                    >
+                      <span>User</span>
+                    </button>
+                  </Link>
+                </li>)
+                }
               </ul>
             </div>
+            
             <div className="sm:flex items-center justify-center hidden sm:col-span-1 ">
               <Link to="/Profile">
                 <button type="button">
@@ -124,7 +151,7 @@ export const Layout = () => {
                       alt="profile"
                     ></img>
                   ) : (
-                    <>NoUser</>
+                    <>{user.displayName}</>
                   )}
                 </button>
               </Link>

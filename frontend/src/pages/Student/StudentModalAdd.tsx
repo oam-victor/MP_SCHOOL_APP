@@ -2,7 +2,7 @@ import type { Dispatch } from 'redux'
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleModalStudentAdd } from '../store/modalSlice'
+import { toggleModalStudentAdd } from '../../store/modalSlice'
 import axios from 'axios'
 
 interface Data {
@@ -24,12 +24,11 @@ interface RootState {
   }
 }
 
-let nameFlag: boolean = true
-let ageFlag: boolean = true
-let classFlag: boolean = true
+let nameFlag = true
+let ageFlag = true
+let classFlag = true
 
 export const StudentModalAdd = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [studentProfile, setStudentProfile] = useState<string>('')
   const [studentName, setStudentName] = useState<string>('')
   const [studentEmail, setStudentEmail] = useState<string>('')
@@ -60,6 +59,7 @@ export const StudentModalAdd = () => {
         class_: studentClass,
         grades: [studentGrade0, studentGrade1, studentGrade2],
       }
+
       const response = await axios.post(
         `http://localhost:3000/api/students/`,
         formData,
@@ -217,6 +217,8 @@ export const StudentModalAdd = () => {
                                 type="number"
                                 name="class"
                                 id="class"
+                                value='0'
+                                disabled
                                 onChange={(e) => {
                                   setStudentClass(Number(e.target.value))
                                   const updatedStudentClass = Number(
@@ -237,7 +239,7 @@ export const StudentModalAdd = () => {
                             </div>
                             {classFlag && (
                               <div className="text-sm font-thin text-red-400">
-                                Class should be between 1-99
+                                Add student to class in classes tab
                               </div>
                             )}
                           </div>
@@ -372,7 +374,7 @@ export const StudentModalAdd = () => {
                       >
                         Cancel
                       </button>
-                      {(nameFlag || classFlag || ageFlag) ? (
+                      {(nameFlag || ageFlag) ? (
                         <button
                           disabled
                           type="submit"

@@ -5,15 +5,15 @@ import { ObjectId } from 'mongodb'
 import { Types } from 'mongoose'
 
 interface classInt {
-  name: number,
-  students: ObjectId[],
+  name: number
+  students: ObjectId[]
   teacher: string
 }
 
 export const classController = {
   getAll: async (req: Request, res: Response) => {
     try {
-      const class_:classInt[] = await Class.find()
+      const class_: classInt[] = await Class.find()
       if (class_.length === 0) {
         res.status(204).json({ message: 'There are no Classes!' })
       } else {
@@ -38,7 +38,7 @@ export const classController = {
   },
   create: async (req: Request, res: Response) => {
     try {
-      const class_:classInt = {
+      const class_: classInt = {
         name: req.body.name,
         teacher: req.body.teacher,
         students: req.body.students,
@@ -51,7 +51,7 @@ export const classController = {
   },
   update: async (req: Request, res: Response) => {
     try {
-      const class_:classInt = {
+      const class_: classInt = {
         name: req.body.name,
         teacher: req.body.teacher,
         students: req.body.students,
@@ -87,27 +87,36 @@ export const classController = {
       const classID = req.params.classID
       const class_ = await Class.findById(classID)
       const student = Student.findById(studentID)
+      const class_object: classInt = class_.toObject()
+      const student_object = (await student).toObject()
 
       if (class_ == null) {
-        res.status(404).json({ message: 'Class not found!' })
+        res.status(404).json({ error: 'Class not found!' })
       } else {
         /*Add student to class*/
 
-        const class_object:classInt = class_.toObject()
+        for (const student of class_object.students) {
+          if (student.toString() === studentID.toString()) {
+            res
+              .status(304)
+              .json({ message: 'Student ID is already in the class.' })
+            return // Make sure to add this to exit the loop if a match is found
+          }
+        }
+
         class_object.students.push(new Types.ObjectId(studentID))
         const response1 = await Class.findByIdAndUpdate(classID, class_object)
 
         /*Add class to student*/
-
-        const student_object = (await student).toObject()
         student_object.class_ = Number(class_object.name)
-        const response2 = await Student.findByIdAndUpdate(studentID, student_object)
+        const response2 = await Student.findByIdAndUpdate(
+          studentID,
+          student_object,
+        )
 
-        if (response1 == null) {
-          res.status(404).json({ message: 'Class not found!' })
-        } else if (response2 == null) {
+        if (response2 == null) {
           res
-            .status(404)
+            .status(400)
             .json({ message: 'Student was not updated succesfully!' })
         } else {
           res.status(200).json({ message: 'Student was added succesfully!' })
@@ -119,18 +128,18 @@ export const classController = {
   },
   pop: async (req: Request, res: Response) => {
     try {
-      const studentID =  new Types.ObjectId(req.params.studentID)
+      const studentID = new Types.ObjectId(req.params.studentID)
       const classID = req.params.classID
       const class_ = await Class.findById(classID)
 
       if (class_ == null) {
         res.status(404).json({ message: 'Class not found!' })
       } else {
-          const class_object = class_.toObject()
-          const class_object_students:Types.ObjectId[] = class_object.students.filter(
-            student => (student.toString() != studentID.toString()),
-          )
-          
+        const class_object = class_.toObject()
+        const class_object_students: Types.ObjectId[] = class_object.students.filter(
+          (student) => student.toString() != studentID.toString(),
+        )
+
         class_object.students = class_object_students
         const response = await Class.findByIdAndUpdate(classID, class_object)
         if (response == null) {

@@ -2,7 +2,7 @@ import type { Dispatch } from 'redux'
 import { Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleModalFinancial } from '../store/modalSlice'
+import { toggleModalFinancial } from '../../store/modalSlice'
 import { ObjectId } from 'mongoose'
 import axios from 'axios'
 

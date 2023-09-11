@@ -9,6 +9,9 @@ router.get('/:id', (req,res) => {
 router.get('/', (req,res) => {
     userController.getAll(req,res);
 });
+router.get('/signin', (req,res) => {
+    userController.signIn(req,res);
+});
 router.post('/', (req,res) => {
     userController.create(req,res);
 });

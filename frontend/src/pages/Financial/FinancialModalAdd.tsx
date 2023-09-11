@@ -2,7 +2,7 @@ import type { Dispatch } from 'redux'
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleModalExpenseAdd } from '../store/modalSlice'
+import { toggleModalFinancialAdd } from '../../store/modalSlice'
 import axios from 'axios'
 
 interface Data {
@@ -14,20 +14,20 @@ interface Data {
 
 interface RootState {
   modal: {
-    modalExpense: boolean
-    modalExpenseAdd: boolean
-    modalExpenseDelete: boolean
+    modalFinancial: boolean
+    modalFinancialAdd: boolean
+    modalFinancialDelete: boolean
   }
 }
 
-export const ExpenseModalAdd = () => {
+export const FinancialModalAdd = () => {
   const [incomeName, setIncomeName] = useState<string>('')
   const [incomeType, setIncomeType] = useState<string>('')
   const [incomeCost, setIncomeCost] = useState<number>(0)
   const [incomePaidOn, setIncomePaidOn] = useState<Date>(new Date(1900, 1, 1))
 
   const modal: boolean = useSelector(
-    (state: RootState) => state.modal.modalExpenseAdd,
+    (state: RootState) => state.modal.modalFinancialAdd,
   )
   const dispatch: Dispatch = useDispatch()
   const cancelButtonRef = useRef(null)
@@ -58,7 +58,7 @@ export const ExpenseModalAdd = () => {
           className="relative z-1"
           initialFocus={cancelButtonRef}
           onClose={() => {
-            dispatch(toggleModalExpenseAdd())
+            dispatch(toggleModalFinancialAdd())
           }}
         >
           <Transition.Child
@@ -211,7 +211,7 @@ export const ExpenseModalAdd = () => {
                         type="button"
                         className="text-sm font-semibold leading-6 text-gray-900"
                         onClick={() => {
-                          dispatch(toggleModalExpenseAdd())
+                          dispatch(toggleModalFinancialAdd())
                         }}
                       >
                         Cancel

@@ -3,19 +3,19 @@ import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import type { Dispatch } from 'redux'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleModalFinancialDelete } from '../store/modalSlice'
+import { toggleModalClass_Delete } from '../../store/modalSlice'
 import { ObjectId } from 'mongoose'
 import axios from 'axios'
 
 interface RootState {
   modal: {
-    modalFinancial: boolean
-    modalFinancialAdd: boolean
-    modalFinancialDelete: boolean
+    modalClass_: boolean
+    modalClass_Add: boolean
+    modalClass_Delete: boolean
   }
 }
 
-interface FinancialModalDeleteProps {
+interface Class_ModalDeleteProps {
   id_: ObjectId
 }
 
@@ -23,7 +23,7 @@ const handleClick = async (id_: ObjectId) => {
   try {
     console.log(id_)
     const response = await axios.delete(
-      `http://localhost:3000/api/income/${id_}`,
+      `http://localhost:3000/api/class/${id_}`,
     )
     console.log(response.status)
     location.reload();
@@ -32,9 +32,9 @@ const handleClick = async (id_: ObjectId) => {
   }
 }
 
-export const FinancialModalDelete = ({ id_ }: FinancialModalDeleteProps) => {
+export const Class_ModalDelete = ({ id_ }: Class_ModalDeleteProps) => {
   const modal: boolean = useSelector(
-    (state: RootState) => state.modal.modalFinancialDelete,
+    (state: RootState) => state.modal.modalClass_Delete,
   )
   const dispatch: Dispatch = useDispatch()
   const cancelButtonRef = useRef(null)
@@ -46,7 +46,7 @@ export const FinancialModalDelete = ({ id_ }: FinancialModalDeleteProps) => {
         className="relative z-10"
         initialFocus={cancelButtonRef}
         onClose={() => {
-          dispatch(toggleModalFinancialDelete())
+          dispatch(toggleModalClass_Delete())
         }}
       >
         <Transition.Child
@@ -104,7 +104,7 @@ export const FinancialModalDelete = ({ id_ }: FinancialModalDeleteProps) => {
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                     onClick={() => {
                       handleClick(id_)
-                      dispatch(toggleModalFinancialDelete())
+                      dispatch(toggleModalClass_Delete())
                     }}
                   >
                     Delete
@@ -112,7 +112,7 @@ export const FinancialModalDelete = ({ id_ }: FinancialModalDeleteProps) => {
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => dispatch(toggleModalFinancialDelete())}
+                    onClick={() => dispatch(toggleModalClass_Delete())}
                     ref={cancelButtonRef}
                   >
                     Cancel

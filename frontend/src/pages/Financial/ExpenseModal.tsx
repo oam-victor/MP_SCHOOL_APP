@@ -2,7 +2,7 @@ import type { Dispatch } from 'redux'
 import { Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleModalExpense } from '../store/modalSlice'
+import { toggleModalExpense } from '../../store/modalSlice'
 import { ObjectId } from 'mongoose'
 import axios from 'axios'
 
@@ -15,7 +15,7 @@ interface Data {
 }
 
 interface ExpenseModalProps {
-  income: Data | null
+  expense: Data | null
 }
 
 interface RootState {
@@ -26,23 +26,23 @@ interface RootState {
   }
 }
 
-export const ExpenseModal = ({ income }: ExpenseModalProps) => {
+export const ExpenseModal = ({ expense }: ExpenseModalProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [incomeId, setIncomeId] = useState<any>(income?._id)
-  const [incomeName, setIncomeName] = useState<string>(income?.name || '')
-  const [incomeType, setIncomeType] = useState<string>(income?.type || '')
-  const [incomeCost, setIncomeCost] = useState<number>(income?.cost || 0)
-  const [incomePaidOn, setIncomePaidOn] = useState<Date>(
-    income?.paid_on || new Date(1900, 1, 1),
+  const [expenseId, setIncomeId] = useState<any>(expense?._id)
+  const [expenseName, setIncomeName] = useState<string>(expense?.name || '')
+  const [expenseType, setIncomeType] = useState<string>(expense?.type || '')
+  const [expenseCost, setIncomeCost] = useState<number>(expense?.cost || 0)
+  const [expensePaidOn, setIncomePaidOn] = useState<Date>(
+    expense?.paid_on || new Date(1900, 1, 1),
   )
 
   useEffect(() => {
-    setIncomeId(income?._id)
-    setIncomeName(income?.name || '')
-    setIncomeType(income?.type || '')
-    setIncomeCost(income?.cost || 0)
-    setIncomePaidOn(income?.paid_on || new Date(1900, 1, 1))
-  }, [income])
+    setIncomeId(expense?._id)
+    setIncomeName(expense?.name || '')
+    setIncomeType(expense?.type || '')
+    setIncomeCost(expense?.cost || 0)
+    setIncomePaidOn(expense?.paid_on || new Date(1900, 1, 1))
+  }, [expense])
 
   const modal: boolean = useSelector(
     (state: RootState) => state.modal.modalExpense,
@@ -53,14 +53,14 @@ export const ExpenseModal = ({ income }: ExpenseModalProps) => {
   const handleSubmit = async () => {
     try {
       const formData: Data = {
-        _id: incomeId,
-        name: incomeName,
-        type: incomeType,
-        cost: incomeCost,
-        paid_on: incomePaidOn,
+        _id: expenseId,
+        name: expenseName,
+        type: expenseType,
+        cost: expenseCost,
+        paid_on: expensePaidOn,
       }
       const response = await axios.put(
-        `http://localhost:3000/api/income/${incomeId}`,
+        `http://localhost:3000/api/expense/${expenseId}`,
         formData,
       )
       console.log(response.status)
@@ -69,8 +69,8 @@ export const ExpenseModal = ({ income }: ExpenseModalProps) => {
     }
   }
 
-  if (!income) {
-    return <div>No income selected</div>
+  if (!expense) {
+    return <div>No expense selected</div>
   } else {
     return (
       <div>
@@ -135,7 +135,7 @@ export const ExpenseModal = ({ income }: ExpenseModalProps) => {
                                   type="text"
                                   name="first-name"
                                   id="first-name"
-                                  value={incomeName}
+                                  value={expenseName}
                                   onChange={(e) => {
                                     setIncomeName(e.target.value)
                                   }}
@@ -155,7 +155,7 @@ export const ExpenseModal = ({ income }: ExpenseModalProps) => {
                                 <select
                                   name="type"
                                   id="type"
-                                  value={incomeType}
+                                  value={expenseType}
                                   onChange={(e) => {
                                     setIncomeType(e.target.value)
                                   }}
@@ -176,7 +176,7 @@ export const ExpenseModal = ({ income }: ExpenseModalProps) => {
                                   type="number"
                                   name="cost"
                                   id="cost"
-                                  value={String(incomeCost)}
+                                  value={String(expenseCost)}
                                   onChange={(e) => {
                                     setIncomeCost(Number(e.target.value))
                                   }}
@@ -195,15 +195,15 @@ export const ExpenseModal = ({ income }: ExpenseModalProps) => {
                                   name="date"
                                   id="date"
                                   value={`${new Date(
-                                    incomePaidOn,
+                                    expensePaidOn,
                                   ).getFullYear()}-${
-                                    new Date(incomePaidOn).getMonth() > 9
-                                      ? new Date(incomePaidOn).getMonth()
-                                      : `0${new Date(incomePaidOn).getMonth()}`
+                                    new Date(expensePaidOn).getMonth() > 9
+                                      ? new Date(expensePaidOn).getMonth()
+                                      : `0${new Date(expensePaidOn).getMonth()}`
                                   }-${
-                                    new Date(incomePaidOn).getDate() > 9
-                                      ? new Date(incomePaidOn).getDate()
-                                      : `0${new Date(incomePaidOn).getDate()}`
+                                    new Date(expensePaidOn).getDate() > 9
+                                      ? new Date(expensePaidOn).getDate()
+                                      : `0${new Date(expensePaidOn).getDate()}`
                                   }`}
                                   onChange={(e) => {
                                     const inputDate = e.target.value

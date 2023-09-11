@@ -5,7 +5,6 @@ import App from './App.tsx'
 import { Provider } from 'react-redux'
 import {store} from './store/store.ts';
 
-// @ts-ignore
 createRoot(document.getElementById('root') as HTMLElement).render(
   <Provider store={store}>
   <React.StrictMode>

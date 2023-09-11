@@ -3,19 +3,19 @@ import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import type { Dispatch } from 'redux'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleModalStudentDelete } from '../store/modalSlice'
+import { toggleModalEmployeeDelete } from '../../store/modalSlice'
 import { ObjectId } from 'mongoose'
 import axios from 'axios'
 
 interface RootState {
   modal: {
-    modalStudent: boolean
-    modalStudentAdd: boolean
-    modalStudentDelete: boolean
+    modalEmployee: boolean
+    modalEmployeeAdd: boolean
+    modalEmployeeDelete: boolean
   }
 }
 
-interface StudentModalDeleteProps {
+interface EmployeeModalDeleteProps {
   id_: ObjectId
 }
 
@@ -23,7 +23,7 @@ const handleClick = async (id_: ObjectId) => {
   try {
     console.log(id_)
     const response = await axios.delete(
-      `http://localhost:3000/api/students/${id_}`,
+      `http://localhost:3000/api/employees/${id_}`,
     )
     console.log(response.status)
     location.reload();
@@ -32,9 +32,9 @@ const handleClick = async (id_: ObjectId) => {
   }
 }
 
-export const StudentModalDelete = ({ id_ }: StudentModalDeleteProps) => {
+export const EmployeeModalDelete = ({ id_ }: EmployeeModalDeleteProps) => {
   const modal: boolean = useSelector(
-    (state: RootState) => state.modal.modalStudentDelete,
+    (state: RootState) => state.modal.modalEmployeeDelete,
   )
   const dispatch: Dispatch = useDispatch()
   const cancelButtonRef = useRef(null)
@@ -46,7 +46,7 @@ export const StudentModalDelete = ({ id_ }: StudentModalDeleteProps) => {
         className="relative z-10"
         initialFocus={cancelButtonRef}
         onClose={() => {
-          dispatch(toggleModalStudentDelete())
+          dispatch(toggleModalEmployeeDelete())
         }}
       >
         <Transition.Child
@@ -104,7 +104,7 @@ export const StudentModalDelete = ({ id_ }: StudentModalDeleteProps) => {
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                     onClick={() => {
                       handleClick(id_)
-                      dispatch(toggleModalStudentDelete())
+                      dispatch(toggleModalEmployeeDelete())
                     }}
                   >
                     Delete
@@ -112,7 +112,7 @@ export const StudentModalDelete = ({ id_ }: StudentModalDeleteProps) => {
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => dispatch(toggleModalStudentDelete())}
+                    onClick={() => dispatch(toggleModalEmployeeDelete())}
                     ref={cancelButtonRef}
                   >
                     Cancel
