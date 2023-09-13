@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --watch",
+    "build": "tsc",
     "dev": "nodemon ./dist/app.js",
     "test": "jest"
   },

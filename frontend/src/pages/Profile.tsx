@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Dispatch } from 'redux'
 import { toggleIsLogged } from '../store/loggedSlicer'
 import { auth } from '../services/firebase'
-import { MagnifyingGlass } from '@phosphor-icons/react'
 
 interface User_ {
   user: {
