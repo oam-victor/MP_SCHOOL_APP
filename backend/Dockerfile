@@ -3,9 +3,11 @@ FROM node:20-alpine3.16
 WORKDIR /app
 
 # Copy the package.json and pnpm-lock.yaml files to the container
-COPY ./server.js ./index.html ./postcss.config.js ./tailwind.config.js ./vite.config.ts ./tsconfig.node.json ./tsconfig.json ./package.json ./pnpm-lock.yaml ./
-COPY /src /app/src
-COPY /images /app/images
+COPY ./app.ts ./tsconfig.json pnpm-lock.yaml package.json .env  ./
+COPY /db /app/db
+COPY /controllers /app/controllers
+COPY /models /app/models
+COPY /routes /app/routes
 
 # Install PNPM globally (if not already installed)
 RUN npm install -g pnpm
@@ -16,7 +18,7 @@ RUN pnpm install
 # Build your Vite.js application for production
 RUN pnpm run build
 
-EXPOSE 5173
+EXPOSE 3000
 
-# Command to start your Vite.js application
-CMD ["node", "server.js"]
+# Command to start your node application
+CMD ["node", "dist/app.js"]
