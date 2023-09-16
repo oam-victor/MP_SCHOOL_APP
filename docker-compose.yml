@@ -1,0 +1,14 @@
+version: '3'
+services:
+  school-front:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:5173"
+  school-back:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:3000"
