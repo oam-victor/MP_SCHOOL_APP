@@ -22,3 +22,5 @@ jobs:
       run: |
         docker-compose -f ./docker-compose.yml build
         docker-compose -f ./docker-compose.yml push
+      env:
+        DOCKER_BUILDKIT: 1  # Enable BuildKit for better performance
