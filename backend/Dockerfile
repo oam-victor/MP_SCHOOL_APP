@@ -3,7 +3,7 @@ FROM node:20-alpine3.16
 WORKDIR /app
 
 # Copy the package.json and pnpm-lock.yaml files to the container
-COPY ./app.ts ./tsconfig.json pnpm-lock.yaml package.json .env  ./
+COPY ./app.ts ./tsconfig.json pnpm-lock.yaml package.json ./
 COPY /db /app/db
 COPY /controllers /app/controllers
 COPY /models /app/models
