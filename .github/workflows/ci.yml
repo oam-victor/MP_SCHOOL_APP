@@ -20,10 +20,7 @@ jobs:
       
     - name: Build and Push Docker Images
       run: |
-        docker build -t school-back:latest -f ./backend/Dockerfile ./backend
-        docker push odamvictor/school-back:latest
-        docker build -t school-front:latest -f ./frontend/Dockerfile ./frontend
-        docker push odamvictor/school-front:latest
-        
+        docker-compose -f ./docker-compose.yml build
+        docker-compose -f ./docker-compose.yml push
       env:
         DOCKER_BUILDKIT: 1  # Enable BuildKit for better performance
