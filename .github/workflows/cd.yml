@@ -17,9 +17,9 @@ jobs:
           sudo docker pull odamvictor/school-back:latest
       - name: Delete Old Docker Containers
         run: |
-          sudo docker prune || true
+          sudo docker container prune || true
 
-      # - name: Run Docker Containers
-      #   run: |
-      #     sudo docker run -d -p 8080:3000 --name school-back-container odamvictor/school-back
-      #     sudo docker run -d -p 80:5173 --name school-front-container odamvictor/school-front
+      - name: Run Docker Containers
+        run: |
+          sudo docker run -d -p 8080:3000 --name school-back-container odamvictor/school-back
+          sudo docker run -d -p 80:5173 --name school-front-container odamvictor/school-front
