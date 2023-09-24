@@ -11,13 +11,15 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Delete Old Docker Containers
+        run: |
+          sudo docker rm -f school-back-container || true
+          sudo docker rm -f school-front-container || true
+
       - name: Pull Docker Images
         run: |
           sudo docker pull odamvictor/school-front:latest
           sudo docker pull odamvictor/school-back:latest
-      - name: Delete Old Docker Containers
-        run: |
-          sudo docker container prune || true
 
       - name: Run Docker Containers
         run: |
