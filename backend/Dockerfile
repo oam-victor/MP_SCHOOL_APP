@@ -21,4 +21,4 @@ RUN pnpm run build
 EXPOSE 3000
 
 # Command to start your node application
-CMD ["node", "dist/app.js"]
+CMD ["pnpm",  "run", "dev"]
