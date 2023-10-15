@@ -66,7 +66,7 @@ export const Financial = () => {
 
   const fetchData = async () => {
     try {
-      const response = axios.get('http://localhost:3000/api/income')
+      const response = axios.get('http://52.14.220.72:3000/api/income')
       const responseData = (await response).data
       setIncome(responseData || [])
     } catch (err) {
@@ -76,7 +76,7 @@ export const Financial = () => {
 
   const fetchExpense = async () => {
     try {
-      const response = axios.get('http://localhost:3000/api/expense')
+      const response = axios.get('http://52.14.220.72:3000/api/expense')
       const responseData = (await response).data
       setExpense(responseData || [])
     } catch (err) {

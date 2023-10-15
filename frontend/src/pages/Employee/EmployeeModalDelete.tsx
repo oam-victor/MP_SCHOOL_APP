@@ -23,7 +23,7 @@ const handleClick = async (id_: ObjectId) => {
   try {
     console.log(id_)
     const response = await axios.delete(
-      `http://localhost:3000/api/employees/${id_}`,
+      `http://52.14.220.72:3000/api/employees/${id_}`,
     )
     console.log(response.status)
     location.reload();

@@ -94,7 +94,7 @@ export const StudentModal = ({ student }: StudentModalProps) => {
         grades: [studentGrade0, studentGrade1, studentGrade2],
       }
       const response = await axios.put(
-        `http://localhost:3000/api/students/${studentId}`,
+        `http://52.14.220.72:3000/api/students/${studentId}`,
         formData,
       )
       console.log(response.status)

@@ -64,7 +64,7 @@ export const UserModal = ({ user }: UserModalProps) => {
         permission: userPermission,
       }
       const response = await axios.put(
-        `http://localhost:3000/api/user/${userId}`,
+        `http://52.14.220.72:3000/api/user/${userId}`,
         formData,
       )
       console.log(response.status)

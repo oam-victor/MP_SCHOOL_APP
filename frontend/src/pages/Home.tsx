@@ -48,7 +48,7 @@ export const Home = () => {
   //=======================================================================================//
   const checkIfUserExist = async (user_: User_) => {
     let flag = false
-    const users = await axios.get('http://localhost:3000/api/user')
+    const users = await axios.get('http://52.14.220.72:3000/api/user')
     //Check if the user exists, if it exists set the flag
     for (const currentUser of users.data) {
       if (currentUser.uid && currentUser.uid === user_.uid) {
@@ -62,7 +62,7 @@ export const Home = () => {
     if (!flag) {
       try {
         const response = await axios.post(
-          `http://localhost:3000/api/user/`,
+          `http://52.14.220.72:3000/api/user/`,
           user_,
         )
         console.log(response.status)
@@ -91,7 +91,7 @@ export const Home = () => {
   //=======================================================================================//
   const handleSignIn = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/signin', {
+      const response = await axios.post('http://52.14.220.72:3000/api/signin', {
         email: userEmail,
         password: userPassword,
       })

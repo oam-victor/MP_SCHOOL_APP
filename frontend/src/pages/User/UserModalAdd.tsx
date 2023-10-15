@@ -49,7 +49,7 @@ export const UserModalAdd = () => {
         uid: userUid,
       }
       const response = await axios.post(
-        `http://localhost:3000/api/user/`,
+        `http://52.14.220.72:3000/api/user/`,
         formData,
       )
       console.log(response.status)
