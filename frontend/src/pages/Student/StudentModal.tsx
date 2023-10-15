@@ -142,8 +142,9 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                 >
                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <form
-                      onSubmit={() => {
-                        handleSubmit()
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleSubmit();
                       }}
                       className="p-5 z-2"
                     >
