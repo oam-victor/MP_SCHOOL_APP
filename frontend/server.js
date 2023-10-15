@@ -14,4 +14,3 @@ app.use(express.static(join(__dirname, 'dist')));
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
