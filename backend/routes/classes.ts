@@ -9,6 +9,7 @@ router.put('/:classID/append/:studentID', (req,res)=>{
 router.put('/:classID/pop/:studentID', (req,res)=>{
     classController.pop(req,res);
 });
+
 router.put('/:classID', (req,res)=>{
     classController.update(req,res);
 });

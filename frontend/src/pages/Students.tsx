@@ -52,7 +52,7 @@ export const Students = () => {
 
   const fetchData = async () => {
     try {
-      const response = axios.get('http://localhost:3000/api/students')
+      const response = axios.get('http://52.14.220.72:3000/api/students')
       const responseData = (await response).data
       setData(responseData || [])
     } catch (err) {
