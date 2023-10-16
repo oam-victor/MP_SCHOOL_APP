@@ -61,7 +61,7 @@ export const StudentModalAdd = () => {
       }
 
       const response = await axios.post(
-        `http://52.14.220.72:3000/api/students/`,
+        `http://3.148.115.155:3000/api/students/`,
         formData,
       )
       console.log(response.status)

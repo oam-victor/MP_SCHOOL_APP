@@ -77,7 +77,7 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
         try {
 
           const resp = await axios.get(
-            `http://52.14.220.72:3000/api/students/${student}`,
+            `http://3.148.115.155:3000/api/students/${student}`,
           )
           response.push(resp.data)
         } catch (err) {
@@ -94,7 +94,7 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get(`http://52.14.220.72:3000/api/students/`)
+        const resp = await axios.get(`http://3.148.115.155:3000/api/students/`)
         setAllStudents(resp.data)
       } catch (err) {
         console.log(err)
@@ -118,7 +118,7 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
         teacher: class_Teacher,
       }
       const response = await axios.put(
-        `http://52.14.220.72:3000/api/class/${class_Id}`,
+        `http://3.148.115.155:3000/api/class/${class_Id}`,
         formData,
       )
       console.log(response.status)
@@ -315,7 +315,7 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
                                                   return updatedStudents
                                                 })
                                                 const resp = await axios.put(
-                                                  `http://52.14.220.72:3000/api/class/${class_Id}/append/${student._id}`,
+                                                  `http://3.148.115.155:3000/api/class/${class_Id}/append/${student._id}`,
                                                 )
                                                 console.log(resp.status)
                                               } catch (err) {
@@ -355,7 +355,7 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
                                         })
                                         try {
                                           const resp = await axios.put(
-                                            `http://52.14.220.72:3000/api/class/${class_Id}/pop/${student_._id}`,
+                                            `http://3.148.115.155:3000/api/class/${class_Id}/pop/${student_._id}`,
                                           )
                                           console.log(resp.status)
                                         } catch (err) {

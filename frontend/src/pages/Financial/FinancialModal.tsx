@@ -60,7 +60,7 @@ export const FinancialModal = ({ income }: FinancialModalProps) => {
         paid_on: incomePaidOn,
       }
       const response = await axios.put(
-        `http://52.14.220.72:3000/api/income/${incomeId}`,
+        `http://3.148.115.155:3000/api/income/${incomeId}`,
         formData,
       )
       console.log(response.status)

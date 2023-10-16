@@ -42,7 +42,7 @@ export const Class_ModalAdd = () => {
         teacher: class_Teacher,
       }
       const response = await axios.post(
-        `http://52.14.220.72:3000/api/class/`,
+        `http://3.148.115.155:3000/api/class/`,
         formData,
       )
       console.log(response.status)

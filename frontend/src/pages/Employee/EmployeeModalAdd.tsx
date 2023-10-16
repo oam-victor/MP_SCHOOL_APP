@@ -53,7 +53,7 @@ export const EmployeeModalAdd = () => {
         position: employeePosition,
       }
       const response = await axios.post(
-        `http://52.14.220.72:3000/api/employees/`,
+        `http://3.148.115.155:3000/api/employees/`,
         formData,
       )
       console.log(response.status)

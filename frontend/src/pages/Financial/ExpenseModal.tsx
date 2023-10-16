@@ -60,7 +60,7 @@ export const ExpenseModal = ({ expense }: ExpenseModalProps) => {
         paid_on: expensePaidOn,
       }
       const response = await axios.put(
-        `http://52.14.220.72:3000/api/expense/${expenseId}`,
+        `http://3.148.115.155:3000/api/expense/${expenseId}`,
         formData,
       )
       console.log(response.status)

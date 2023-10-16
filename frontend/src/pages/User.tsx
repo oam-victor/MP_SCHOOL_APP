@@ -47,7 +47,7 @@ export const User = () => {
 
   const fetchData = async () => {
     try {
-      const response = axios.get('http://52.14.220.72:3000/api/user')
+      const response = axios.get('http://3.148.115.155:3000/api/user')
       const responseData = (await response).data
       setData(responseData || [])
     } catch (err) {
