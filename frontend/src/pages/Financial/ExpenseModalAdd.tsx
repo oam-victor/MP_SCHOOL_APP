@@ -41,7 +41,7 @@ export const ExpenseModalAdd = () => {
         paid_on: expensePaidOn,
       }
       const response = await axios.post(
-        `http://localhost:3000/api/expense/`,
+        `http://3.148.115.155:3000/api/expense/`,
         formData,
       )
       console.log(response.status)

@@ -64,7 +64,7 @@ export const UserModal = ({ user }: UserModalProps) => {
         permission: userPermission,
       }
       const response = await axios.put(
-        `http://localhost:3000/api/user/${userId}`,
+        `http://3.148.115.155:3000/api/user/${userId}`,
         formData,
       )
       console.log(response.status)
@@ -179,6 +179,7 @@ export const UserModal = ({ user }: UserModalProps) => {
                               >
                                 <option value="admin">admin</option>
                                 <option value="read">read</option>
+                                <option value="write">write</option>
                               </select>
                             </div>
 

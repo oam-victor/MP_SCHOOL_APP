@@ -14,7 +14,7 @@ const credentialsSlice = createSlice({
   initialState,
   reducers: {
     toggleCredentials: (state:InitialState) => {
-      state.flag = false
+      state.flag = !state.flag
       //state = [...state, action.payload]
     },
   },

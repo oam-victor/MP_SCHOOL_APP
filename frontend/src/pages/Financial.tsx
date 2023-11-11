@@ -36,8 +36,20 @@ interface RootState {
   }
 }
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const Financial = () => {
+  const userSlice = useSelector((state: User_) => state.user)
   const [income, setIncome] = useState<Data[] | null>(null)
   const [expense, setExpense] = useState<Data[] | null>(null)
   const [select, setSelect] = useState<Data | null>(null)
@@ -66,7 +78,7 @@ export const Financial = () => {
 
   const fetchData = async () => {
     try {
-      const response = axios.get('http://localhost:3000/api/income')
+      const response = axios.get('http://3.148.115.155:3000/api/income')
       const responseData = (await response).data
       setIncome(responseData || [])
     } catch (err) {
@@ -76,7 +88,7 @@ export const Financial = () => {
 
   const fetchExpense = async () => {
     try {
-      const response = axios.get('http://localhost:3000/api/expense')
+      const response = axios.get('http://3.148.115.155:3000/api/expense')
       const responseData = (await response).data
       setExpense(responseData || [])
     } catch (err) {
@@ -107,7 +119,9 @@ export const Financial = () => {
               <button
                 type="button"
                 onClick={() => {
-                  dispatch(toggleModalFinancialAdd())
+                  if (!(userSlice.permission == 'read')) {
+                    dispatch(toggleModalFinancialAdd())
+                  }
                 }}
                 className="ml-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
               >
@@ -271,7 +285,9 @@ export const Financial = () => {
               <button
                 type="button"
                 onClick={() => {
-                  dispatch(toggleModalExpenseAdd())
+                  if (!(userSlice.permission == 'read')) {
+                    dispatch(toggleModalExpenseAdd())
+                  }
                 }}
                 className="ml-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
               >

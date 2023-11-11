@@ -23,16 +23,28 @@ const handleClick = async (id_: ObjectId) => {
   try {
     console.log(id_)
     const response = await axios.delete(
-      `http://localhost:3000/api/class/${id_}`,
+      `http://3.148.115.155:3000/api/class/${id_}`,
     )
     console.log(response.status)
-    location.reload();
+    location.reload()
   } catch (err) {
     console.log(err)
   }
 }
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 export const Class_ModalDelete = ({ id_ }: Class_ModalDeleteProps) => {
+  const userSlice = useSelector((state: User_) => state.user)
   const modal: boolean = useSelector(
     (state: RootState) => state.modal.modalClass_Delete,
   )
@@ -103,8 +115,10 @@ export const Class_ModalDelete = ({ id_ }: Class_ModalDeleteProps) => {
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                     onClick={() => {
-                      handleClick(id_)
-                      dispatch(toggleModalClass_Delete())
+                      if (!(userSlice.permission == 'read')) {
+                        handleClick(id_)
+                        dispatch(toggleModalClass_Delete())
+                      }
                     }}
                   >
                     Delete

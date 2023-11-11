@@ -31,7 +31,19 @@ interface RootState {
 
 let nameFlag = false
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 export const EmployeeModal = ({ employee }: EmployeeModalProps) => {
+  const userSlice = useSelector((state: User_) => state.user)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [employeeId, setEmployeeId] = useState<any>(employee?._id)
   const [employeeName, setEmployeeName] = useState<string>(employee?.name || '')
@@ -84,7 +96,7 @@ export const EmployeeModal = ({ employee }: EmployeeModalProps) => {
         position: employeePosition,
       }
       const response = await axios.put(
-        `http://localhost:3000/api/employees/${employeeId}`,
+        `http://3.148.115.155:3000/api/employees/${employeeId}`,
         formData,
       )
       console.log(response.status)
@@ -300,7 +312,7 @@ export const EmployeeModal = ({ employee }: EmployeeModalProps) => {
                         >
                           Cancel
                         </button>
-                        {nameFlag ? (
+                        {nameFlag || userSlice.permission == 'read' ? (
                           <button
                             disabled
                             type="submit"

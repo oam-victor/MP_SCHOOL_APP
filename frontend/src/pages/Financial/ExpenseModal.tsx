@@ -25,8 +25,19 @@ interface RootState {
     modalExpenseDelete: boolean
   }
 }
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
 
 export const ExpenseModal = ({ expense }: ExpenseModalProps) => {
+  const userSlice = useSelector((state: User_) => state.user)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [expenseId, setIncomeId] = useState<any>(expense?._id)
   const [expenseName, setIncomeName] = useState<string>(expense?.name || '')
@@ -60,7 +71,7 @@ export const ExpenseModal = ({ expense }: ExpenseModalProps) => {
         paid_on: expensePaidOn,
       }
       const response = await axios.put(
-        `http://localhost:3000/api/expense/${expenseId}`,
+        `http://3.148.115.155:3000/api/expense/${expenseId}`,
         formData,
       )
       console.log(response.status)
@@ -238,12 +249,22 @@ export const ExpenseModal = ({ expense }: ExpenseModalProps) => {
                         >
                           Cancel
                         </button>
-                        <button
-                          type="submit"
-                          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                          Save
-                        </button>
+                        {userSlice.permission == 'read' ? (
+                          <button
+                            disabled
+                            type="submit"
+                            className="opacity-50 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                            Save
+                          </button>
+                        ) : (
+                          <button
+                            type="submit"
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                            Save
+                          </button>
+                        )}
                       </div>
                     </form>
                   </Dialog.Panel>

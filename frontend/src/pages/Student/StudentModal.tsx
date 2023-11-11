@@ -34,7 +34,19 @@ let nameFlag  = false
 let ageFlag  = false
 let classFlag = false
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 export const StudentModal = ({ student }: StudentModalProps) => {
+  const userSlice = useSelector((state: User_) => state.user)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [studentId, setStudentId] = useState<any>(student?._id)
   const [studentProfile, setStudentProfile] = useState<string>(
@@ -94,7 +106,7 @@ export const StudentModal = ({ student }: StudentModalProps) => {
         grades: [studentGrade0, studentGrade1, studentGrade2],
       }
       const response = await axios.put(
-        `http://localhost:3000/api/students/${studentId}`,
+        `http://3.148.115.155:3000/api/students/${studentId}`,
         formData,
       )
       console.log(response.status)
@@ -142,8 +154,7 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                 >
                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
+                      onSubmit={() => {
                         handleSubmit();
                       }}
                       className="p-5 z-2"
@@ -407,7 +418,7 @@ export const StudentModal = ({ student }: StudentModalProps) => {
                         >
                           Cancel
                         </button>
-                        {nameFlag || classFlag || ageFlag ? (
+                        {nameFlag || classFlag || ageFlag || userSlice.permission == 'read'  ? (
                           <button
                             disabled
                             type="submit"

@@ -40,19 +40,21 @@ interface User_ {
 
 let emailFlag = false
 let passwordFlag = false
+let userPermission = "read";
 
 export const Home = () => {
   const [userEmail, setUserEmail] = useState<string>('')
   const [userPassword, setUserPassword] = useState<string>('')
-  const [userPermission, setUserPermission] = useState<string>('read')
+  
   //=======================================================================================//
   const checkIfUserExist = async (user_: User_) => {
+
     let flag = false
-    const users = await axios.get('http://localhost:3000/api/user')
+    const users = await axios.get('http://3.148.115.155:3000/api/user')
     //Check if the user exists, if it exists set the flag
     for (const currentUser of users.data) {
-      if (currentUser.uid && currentUser.uid === user_.uid) {
-        setUserPermission(currentUser.permission)
+      if (currentUser.uid && (currentUser.uid === user_.uid)) {
+        userPermission = currentUser.permission;
         flag = !flag
         break
       }
@@ -62,7 +64,7 @@ export const Home = () => {
     if (!flag) {
       try {
         const response = await axios.post(
-          `http://localhost:3000/api/user/`,
+          `http://3.148.115.155:3000/api/user/`,
           user_,
         )
         console.log(response.status)
@@ -91,20 +93,22 @@ export const Home = () => {
   //=======================================================================================//
   const handleSignIn = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/signin', {
+      const response = await axios.post('http://3.148.115.155:3000/api/signin', {
         email: userEmail,
         password: userPassword,
       })
       const {
         uid,
-        displayName,
+        name,
         email,
         photoURL,
         permission,
       } = response.data.data[0]
+
+      console.log(response.data.data[0]);
       const user: User_ = {
         uid: uid,
-        name: displayName,
+        name: name,
         email: email,
         photoURL: photoURL,
         permission: permission,
@@ -143,7 +147,9 @@ export const Home = () => {
         permission: userPermission,
       }
 
-      checkIfUserExist(user)
+      await checkIfUserExist(user)
+
+      user.permission = userPermission;
 
       await dispatch(setUser(user))
       await dispatch(toggleIsLogged())
@@ -176,7 +182,9 @@ export const Home = () => {
         permission: 'read',
       }
 
-      checkIfUserExist(user)
+      await checkIfUserExist(user)
+
+      user.permission = userPermission;
 
       await dispatch(setUser(user))
       await dispatch(toggleIsLogged())

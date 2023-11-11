@@ -22,12 +22,25 @@ interface RootState {
   }
 }
 
+function generateUID() {
+  // Get the current timestamp
+  const timestamp = Date.now().toString(36);
+
+  // Generate a random number (you can adjust the length as needed)
+  const randomPart = Math.random().toString(36).substring(2, 10);
+
+  // Combine the timestamp and random part to create a unique ID
+  const uid = timestamp + randomPart;
+
+  return uid;
+}
+
 let emailFlag = true
 let passwordFlag = true
 
 export const SignUpModal = () => {
   const [signUp_Name, setSignUpName] = useState<string>('')
-  const [signUp_uid, setSignUp_uid] = useState<string>('')
+  const [, setSignUp_uid] = useState<string>('')
   const [signUp_email, setSignUp_email] = useState<string>('')
   const [signUp_photoURL, setSignUp_photoURL] = useState<string>('')
   const [signUp_password, setSignUp_password] = useState<string>('')
@@ -43,13 +56,13 @@ export const SignUpModal = () => {
     try {
       const formData: User_ = {
         name: signUp_Name,
-        uid: signUp_uid || '',
+        uid: generateUID(),
         email: signUp_email,
         photoURL: signUp_photoURL || default_profile,
         password: signUp_password,
-        permission: 'read'
+        permission: 'read',
       }
-      await axios.post(`http://localhost:3000/api/user/`, formData)
+      await axios.post(`http://3.148.115.155:3000/api/user/`, formData)
       dispatch(toggleModalSignUp())
     } catch (err) {
       dispatch(toggleCredentials())
