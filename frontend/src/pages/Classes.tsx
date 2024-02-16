@@ -26,7 +26,19 @@ interface RootState {
   }
 }
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 export const Class_ = () => {
+  const userSlice = useSelector((state: User_) => state.user)
   const [data, setData] = useState<Data[] | null>(null)
   const [select, setSelect] = useState<Data | null>(null)
   const [searchFlag, setSearchFlag] = useState<boolean>(false)
@@ -69,7 +81,9 @@ export const Class_ = () => {
             <button
               type="button"
               onClick={() => {
+                if (!(userSlice.permission == 'read')) {
                 dispatch(toggleModalClass_Add())
+                }
               }}
               className="ml-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
             >

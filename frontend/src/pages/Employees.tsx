@@ -29,7 +29,19 @@ interface RootState {
   }
 }
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 export const Employees = () => {
+  const userSlice = useSelector((state: User_) => state.user)
   const [data, setData] = useState<Data[] | null>(null)
   const [select, setSelect] = useState<Data | null>(null)
   const [searchFlag, setSearchFlag] = useState<boolean>(false)
@@ -72,7 +84,9 @@ export const Employees = () => {
             <button
               type="button"
               onClick={() => {
-                dispatch(toggleModalEmployeeAdd())
+                if (!(userSlice.permission == 'read')) {
+                  dispatch(toggleModalEmployeeAdd())
+                }
               }}
               className="ml-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
             >
@@ -90,19 +104,19 @@ export const Employees = () => {
                   const matchElements = []
                   if (currentSearch) {
                     for (const employee of data) {
-                        if (
-                          employee.name &&
-                          employee.name
-                            .toLowerCase()
-                            .includes(currentSearch.toLowerCase()) &&
-                          matchElements.length < 5
-                        ) {
-                          matchElements.push(employee)
-                          setMatchingElement(matchElements)
-                        }
-                        if (matchingElement.length > 2) {
-                          break
-                        }
+                      if (
+                        employee.name &&
+                        employee.name
+                          .toLowerCase()
+                          .includes(currentSearch.toLowerCase()) &&
+                        matchElements.length < 5
+                      ) {
+                        matchElements.push(employee)
+                        setMatchingElement(matchElements)
+                      }
+                      if (matchingElement.length > 2) {
+                        break
+                      }
                     }
                   } else {
                     setMatchingElement([])

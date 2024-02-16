@@ -30,6 +30,7 @@ const userSlice = createSlice({
       localStorage.setItem('name', String(state.name));
       localStorage.setItem('email', String(state.email));
       localStorage.setItem('photoURL', String(state.photoURL));
+      localStorage.setItem('permission', String(state.permission));
     },
   },
 })

@@ -31,7 +31,19 @@ interface RootState {
   }
 }
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 export const Students = () => {
+  const userSlice = useSelector((state: User_) => state.user)
   const [data, setData] = useState<Data[] | null>(null)
   const [select, setSelect] = useState<Data | null>(null)
   const [searchFlag, setSearchFlag] = useState<boolean>(false)
@@ -74,7 +86,9 @@ export const Students = () => {
             <button
               type="button"
               onClick={() => {
-                dispatch(toggleModalStudentAdd())
+                if (!(userSlice.permission == 'read')) {
+                  dispatch(toggleModalStudentAdd())
+                }
               }}
               className="ml-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
             >
@@ -125,85 +139,83 @@ export const Students = () => {
           </div>
           <div className="mt-6 border-t border-gray-100">
             <dl className="divide-y divide-gray-100">
-              {!matchingElement.length ? (
-                data.map((student) => {
-                  return (
-                    <div
-                      onMouseDown={(e) => e.preventDefault()}
-                      key={String(student._id)}
-                      className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 "
-                    >
-                      <dt className="flex items-center text-sm font-medium leading-6 text-gray-900">
-                        {student.name}
-                      </dt>
-                      <dd className="mb-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
-                        {student.email}
-                      </dd>
-                      <dd className="flex justify-start text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelect(student)
-                            dispatch(toggleModalStudentDelete())
-                          }}
-                          className="h-8 mr-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
-                        >
-                          Delete
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelect(student)
-                            dispatch(toggleModalStudent())
-                          }}
-                          className="h-8 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
-                        >
-                          Edit
-                        </button>
-                      </dd>
-                    </div>
-                  )
-                })
-              ) : (
-                matchingElement.map((student) => {
-                  return (
-                    <div
-                      onMouseDown={(e) => e.preventDefault()}
-                      key={String(student._id)}
-                      className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 "
-                    >
-                      <dt className="flex items-center text-sm font-medium leading-6 text-gray-900">
-                        {student.name}
-                      </dt>
-                      <dd className="mb-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
-                        {student.email}
-                      </dd>
-                      <dd className="flex justify-start text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelect(student)
-                            dispatch(toggleModalStudentDelete())
-                          }}
-                          className="h-8 mr-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
-                        >
-                          Delete
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelect(student)
-                            dispatch(toggleModalStudent())
-                          }}
-                          className="h-8 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
-                        >
-                          Edit
-                        </button>
-                      </dd>
-                    </div>
-                  )
-                })
-              )}
+              {!matchingElement.length
+                ? data.map((student) => {
+                    return (
+                      <div
+                        onMouseDown={(e) => e.preventDefault()}
+                        key={String(student._id)}
+                        className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 "
+                      >
+                        <dt className="flex items-center text-sm font-medium leading-6 text-gray-900">
+                          {student.name}
+                        </dt>
+                        <dd className="mb-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+                          {student.email}
+                        </dd>
+                        <dd className="flex justify-start text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelect(student)
+                              dispatch(toggleModalStudentDelete())
+                            }}
+                            className="h-8 mr-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
+                          >
+                            Delete
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelect(student)
+                              dispatch(toggleModalStudent())
+                            }}
+                            className="h-8 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
+                          >
+                            Edit
+                          </button>
+                        </dd>
+                      </div>
+                    )
+                  })
+                : matchingElement.map((student) => {
+                    return (
+                      <div
+                        onMouseDown={(e) => e.preventDefault()}
+                        key={String(student._id)}
+                        className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 "
+                      >
+                        <dt className="flex items-center text-sm font-medium leading-6 text-gray-900">
+                          {student.name}
+                        </dt>
+                        <dd className="mb-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+                          {student.email}
+                        </dd>
+                        <dd className="flex justify-start text-sm leading-6 text-gray-700 sm:col-span-1 sm:mt-0">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelect(student)
+                              dispatch(toggleModalStudentDelete())
+                            }}
+                            className="h-8 mr-2 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
+                          >
+                            Delete
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelect(student)
+                              dispatch(toggleModalStudent())
+                            }}
+                            className="h-8 font-semibold duration-300 border-gray-700 border-2 inline-flex items-center justify-center rounded-md px-1  hover:bg-gray-700 hover:text-white"
+                          >
+                            Edit
+                          </button>
+                        </dd>
+                      </div>
+                    )
+                  })}
             </dl>
           </div>
         </div>

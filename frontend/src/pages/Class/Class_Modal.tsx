@@ -38,9 +38,21 @@ interface RootState {
   }
 }
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 let nameFlag = false
 
 export const Class_Modal = ({ class_ }: Class_ModalProps) => {
+  const userSlice = useSelector((state: User_) => state.user)
   const modal: boolean = useSelector(
     (state: RootState) => state.modal.modalClass_,
   )
@@ -61,10 +73,10 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
   const [matchElements, setMatchElements] = useState<Student[]>([])
 
   useEffect(() => {
-    setClass_Name(class_?.name || 0)
-    setClass_Teacher(class_?.teacher || '')
-    setClass_Id(class_?._id)
-    setClass_Students(class_?.students || [])
+    setClass_Name((prevName) => class_?.name || prevName)
+    setClass_Teacher((prevTeacher) => class_?.teacher || prevTeacher)
+    setClass_Id((prevId: any) => class_?._id || prevId)
+    setClass_Students((prevStudents) => class_?.students || prevStudents)
   }, [class_])
 
   //fetch data from students of the class
@@ -75,7 +87,6 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
       const response: Student[] = []
       for (const student of class_Students) {
         try {
-
           const resp = await axios.get(
             `http://3.148.115.155:3000/api/students/${student}`,
           )
@@ -84,12 +95,11 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
           console.log(err)
         }
       }
-      
+
       setStudents(response)
     }
     fetchData()
-    
-  }, [modal, class_Students])
+  }, [class_Students])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,7 +112,7 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
     }
 
     fetchData()
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modal])
 
@@ -244,8 +254,9 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
                                   type="button"
                                   className="ml-2 text-indigo-600 hover:opacity-50"
                                   onClick={() => {
+                                    if (!(userSlice.permission == 'read')) {
                                     setSearchFlag(!searchFlag)
-                                  }}
+                                  }}}
                                 >
                                   {' '}
                                   <UserPlus />{' '}
@@ -294,6 +305,7 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
                                           className="mt-2 text-indigo-600 font-bold text-xs"
                                           type="button"
                                           onClick={async () => {
+                                            
                                             //flag not to allow requests to repeasted names
                                             const flag = () => {
                                               for (const student_ of students) {
@@ -301,7 +313,7 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
                                                   student_.name == student.name
                                                 ) {
                                                   return 1
-                                                }                                             
+                                                }
                                               }
                                               return 0
                                             }
@@ -345,21 +357,23 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
                                       type="button"
                                       className="text-indigo-600 hover:opacity-50"
                                       onClick={async () => {
-                                        setStudents((prevStudents) => {
-                                          const updatedStudents = prevStudents.filter(
-                                            (currentStudent) =>
-                                              currentStudent._id !==
-                                              student_._id,
-                                          )
-                                          return updatedStudents
-                                        })
-                                        try {
-                                          const resp = await axios.put(
-                                            `http://3.148.115.155:3000/api/class/${class_Id}/pop/${student_._id}`,
-                                          )
-                                          console.log(resp.status)
-                                        } catch (err) {
-                                          console.log(err)
+                                        if (!(userSlice.permission == 'read')) {
+                                          setStudents((prevStudents) => {
+                                            const updatedStudents = prevStudents.filter(
+                                              (currentStudent) =>
+                                                currentStudent._id !==
+                                                student_._id,
+                                            )
+                                            return updatedStudents
+                                          })
+                                          try {
+                                            const resp = await axios.put(
+                                              `http://3.148.115.155:3000/api/class/${class_Id}/pop/${student_._id}`,
+                                            )
+                                            console.log(resp.status)
+                                          } catch (err) {
+                                            console.log(err)
+                                          }
                                         }
                                       }}
                                     >
@@ -383,19 +397,18 @@ export const Class_Modal = ({ class_ }: Class_ModalProps) => {
                         >
                           Cancel
                         </button>
-                        {nameFlag ? (
+                        {nameFlag || userSlice.permission == 'read' ? (
                           <button
                             disabled
                             type="button"
                             className="opacity-30 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            
                           >
                             Save
                           </button>
                         ) : (
                           <button
                             type="submit"
-                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"                           
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                           >
                             Save
                           </button>

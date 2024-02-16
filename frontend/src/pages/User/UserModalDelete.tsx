@@ -22,7 +22,7 @@ interface UserModalDeleteProps {
 const handleClick = async (id_: ObjectId) => {
   try {
     const response = await axios.delete(
-      `http://localhost:3000/api/user/${id_}`,
+      `http://3.148.115.155:3000/api/user/${id_}`,
     )
     console.log(response.status)
     location.reload();

@@ -22,7 +22,19 @@ interface RootState {
 
 let nameFlag = true
 
+interface User_ {
+  user: {
+    uid: string
+    email: string
+    name: string
+    photoURL: string
+    password?: string
+    permission: string
+  }
+}
+
 export const Class_ModalAdd = () => {
+  const userSlice = useSelector((state: User_) => state.user)
   const [class_Name, setClass_Name] = useState<number>(0)
   const [class_Teacher, setClass_Teacher] = useState<string>('')
   const [class_Students, setClass_Students] = useState<ObjectId[]>([])
@@ -171,7 +183,7 @@ export const Class_ModalAdd = () => {
                       >
                         Cancel
                       </button>
-                      {nameFlag ? (
+                      {nameFlag || userSlice.permission == "read" ? (
                         <button
                           disabled
                           type="submit"

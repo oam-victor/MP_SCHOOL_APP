@@ -179,6 +179,7 @@ export const UserModal = ({ user }: UserModalProps) => {
                               >
                                 <option value="admin">admin</option>
                                 <option value="read">read</option>
+                                <option value="write">write</option>
                               </select>
                             </div>
 
