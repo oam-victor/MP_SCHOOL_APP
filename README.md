@@ -22,7 +22,7 @@ School Record APP
 * [HEADLESS UI](https://headlessui.com/react/transition)
 * [VITE](https://vitejs.dev/)
 * [MONGODB](https://account.mongodb.com/account/login?signedOut=true&n=https%3A%2F%2Fcloud.mongodb.com%2Fv2%2F6451b11b61aefb5459f1c61d#/clusters)
-* [Firebase](https://account.mongodb.com/account/login?signedOut=true&n=https%3A%2F%2Fcloud.mongodb.com%2Fv2%2F6451b11b61aefb5459f1c61d#/clusters)
+* [FIREBASE](https://account.mongodb.com/account/login?signedOut=true&n=https%3A%2F%2Fcloud.mongodb.com%2Fv2%2F6451b11b61aefb5459f1c61d#/clusters)
 
 ## 👨‍💻 Collaborators:
 - [oam-victor](https://github.com/oam-victor)
